@@ -293,13 +293,6 @@
     # $1:[TYPE=]target, $2:mountpoint, $3:mount options, [$4:fs type]
     progress "mount filesystem $1 ..."
 
-    if [ -n "$wol_ip" ] && [ -n "$wol_mac" ] && [ -n "$wol_wait" ]; then
-      if ! (/bin/busybox ping -q -c 2 "$wol_ip" > /dev/null 2>&1); then
-        /bin/busybox ether-wake "$wol_mac"
-        /bin/busybox sleep "$wol_wait"
-      fi
-    fi
-
     MOUNT_TARGET="${1#*=}"
     case $1 in
       LABEL=*|UUID=*|/*)
@@ -429,6 +422,13 @@
   }
 
   mount_storage() {
+    if [ -n "$wol_ip" ] && [ -n "$wol_mac" ] && [ -n "$wol_wait" ]; then
+      if ! (/bin/busybox ping -q -c 2 "$wol_ip" > /dev/null 2>&1); then
+        /bin/busybox ether-wake "$wol_mac"
+        /bin/busybox sleep "$wol_wait"
+      fi
+    fi
+    
     progress "Mounting storage"
 
     if [ -n "$disk" ]; then
