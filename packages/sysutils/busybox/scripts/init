@@ -97,6 +97,9 @@
       wol_ip=*)
         wol_ip="${arg#*=}"
         ;;
+      wol_wait=*)
+        wol_wait="${arg#*=}"
+        ;;
       textmode)
         INIT_ARGS="$INIT_ARGS --unit=textmode.target"
         ;;
